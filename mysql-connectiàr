@@ -1,0 +1,21 @@
+Connecteur mysql
+
+import mysql.connector
+
+db = mysql.connector.connect(
+host="localhost",
+user="root",
+password="",
+database="mia_memory"
+)
+
+cursor = db.cursor()
+
+def sauvegarder_memoire(type_memoire, contenu):
+sql = """
+INSERT INTO memories(type, content)
+VALUES (%s, %s)
+"""
+
+cursor.execute(sql, (type_memoire, contenu))
+db.commit()
