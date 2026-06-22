@@ -1,0 +1,297 @@
+
+# -*- coding: utf-8 -*-
+
+import os
+import subprocess
+import json
+import time
+
+CONFIG_FILE = "memory/instant/system_state.json"
+
+SERVICES = [
+{
+"name": "Symfony API",
+"path": "backend/symfony-api",
+"start": "symfony server:start"
+},
+{
+"name": "Laravel Core",
+"path": "backend/laravel-core",
+"start": "php artisan serve"
+},
+{
+"name": "React Dashboard",
+"path": "frontend/react-dashboard",
+"start": "npm start"
+}
+]
+
+def log(message):
+print(f"[MIA-BOOT] {message}")
+
+def verifier_dependances():
+log("Vérification des dépendances...")
+
+dependances = [
+"composer",
+"php",
+"python",
+"node",
+"npm"
+]
+
+for dep in dependances:
+try:
+subprocess.run([dep, "--version"], check=True,
+stdout=subprocess.DEVNULL)
+log(f"{dep} OK")
+except:
+log(f"{dep} MANQUANT")
+
+def installer_dependances():
+projets = [
+("backend/symfony-api", "composer install"),
+("backend/laravel-core", "composer install"),
+("frontend/react-dashboard", "npm install")
+]
+
+for path, cmd in projets:
+log(f"Installation dépendances : {path}")
+subprocess.run(cmd, cwd=path, shell=True)
+
+def lancer_services():
+for service in SERVICES:
+log(f"Démarrage : {service['name']}")
+
+subprocess.Popen(
+service["start"],
+cwd=service["path"],
+shell=True
+)
+
+def charger_identite():
+with open("memory/instant/identity_core.json",
+"r",
+encoding="utf-8") as f:
+return json.load(f)
+
+def afficher_message_bienvenue(identity):
+print("\n==============================")
+print(f"Bienvenue {identity['IA_IDENTITY']['nom']}")
+print(identity['IA_MISSION']['raison_d_etre'])
+print("==============================\n")
+
+if __name__ == "__main__":
+
+verifier_dependances()
+
+installer_dependances()
+
+identite = charger_identite()
+
+afficher_message_bienvenue(identite)
+
+lancer_services()
+
+log("Tous les services sont actifs.")
+
+import subprocess
+import time
+
+import subprocess
+import time
+
+PROJETS = [
+("backend/symfony-api", "composer update"),
+("backend/laravel-core", "composer update"),
+("frontend/react-dashboard", "npm update")
+]
+
+def update():
+for path, cmd in PROJETS:
+print(f"[UPDATE] {path}")
+subprocess.run(cmd, cwd=path, shell=True)
+
+while True:
+update()
+
+print("Mise à jour terminée.")
+# toutes les 48h
+time.sleep(172800)
+
+CREATE DATABASE mia_memory;
+
+USE mia_memory;
+
+CREATE TABLE memories (
+id INT AUTO_INCREMENT PRIMARY KEY,
+type VARCHAR(50),
+content LONGTEXT,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+import mysql.connector
+
+db = mysql.connector.connect(
+host="localhost",
+user="root",
+password="",
+database="mia_memory"
+)
+
+cursor = db.cursor()
+
+def sauvegarder_memoire(type_memoire, contenu):
+sql = """
+INSERT INTO memories(type, content)
+VALUES (%s, %s)
+"""
+
+cursor.execute(sql, (type_memoire, contenu))
+db.commit()
+
+import React from 'react';
+
+const ProgressBar = ({ progress }) => {
+
+return (
+<div style={{
+width: '100%',
+background: '#1e293b',
+borderRadius: '8px'
+}}>
+<div style={{
+width: `${progress}%`,
+height: '20px',
+background: '#38bdf8',
+borderRadius: '8px',
+transition: '0.4s'
+}} />
+</div>
+);
+};
+
+export default ProgressBar;
+
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI()
+
+class Message(BaseModel):
+prompt: str
+
+@app.post("/mia")
+def parler(data: Message):
+
+return {
+"response":
+f"Mia a reçu : {data.prompt}"
+}
+
+def test_base9():
+
+valeur = 81
+
+assert valeur % 9 == 0
+
+PROJETS = [
+("backend/symfony-api", "composer update"),
+("backend/laravel-core", "composer update"),
+("frontend/react-dashboard", "npm update")
+]
+
+def update():
+for path, cmd in PROJETS:
+print(f"[UPDATE] {path}")
+subprocess.run(cmd, cwd=path, shell=True)
+
+while True:
+update()
+
+print("Mise à jour terminée.")
+# toutes les 48h
+time.sleep(172800)
+
+
+CREATE DATABASE mia_memory;
+
+USE mia_memory;
+
+CREATE TABLE memories (
+id INT AUTO_INCREMENT PRIMARY KEY,
+type VARCHAR(50),
+content LONGTEXT,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+import mysql.connector
+
+db = mysql.connector.connect(
+host="localhost",
+user="root",
+password="",
+database="mia_memory"
+)
+
+cursor = db.cursor()
+
+def sauvegarder_memoire(type_memoire, contenu):
+sql = """
+INSERT INTO memories(type, content)
+VALUES (%s, %s)
+"""
+
+cursor.execute(sql, (type_memoire, contenu))
+db.commit()
+
+import React from 'react';
+
+const ProgressBar = ({ progress }) => {
+
+return (
+<div style={{
+width: '100%',
+background: '#1e293b',
+borderRadius: '8px'
+}}>
+<div style={{
+width: `${progress}%`,
+height: '20px',
+background: '#38bdf8',
+borderRadius: '8px',
+transition: '0.4s'
+}} />
+</div>
+);
+};
+
+export default ProgressBar;
+
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI()
+
+class Message(BaseModel):
+prompt: str
+
+@app.post("/mia")
+def parler(data: Message):
+
+return {
+"response":
+f"Mia a reçu : {data.prompt}"
+}
+
+def test_base9():
+
+valeur = 81
+
+assert valeur % 9 == 0;
+
+
+
+
+
+
